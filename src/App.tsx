@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 
 const width: number = 8
+
 const candyColors: string[] = [
   "blue",
   "green",
@@ -81,6 +82,10 @@ const App = () => {
     }
   }
 
+  const dragStart = () => {
+    
+  }
+
   const createBoard = () : void => {
     const randomColorArrangement: string[] = []
     for(let i = 0; i < width * width; i++){
@@ -111,7 +116,7 @@ const App = () => {
     <div className="flex p-8">
       <div className="w-[560px] h-[560px] flex flex-wrap">
         {currentColorArrangement.map((candyColor: string, index: number) => (
-          <img className="w-[70px] h-[70px]" key={index} alt={candyColor} style={{background: candyColor}} />
+          <img className="w-[70px] h-[70px]" key={index} alt={candyColor} style={{background: candyColor}} data-id={index} draggable={true} onDragOver={(e) => e.preventDefault()} onDragEnd={(e) => e.preventDefault()} onDragLeave={(e) => e.preventDefault()} onDrop={dragDrop} onDragStart={dragStart} onDragEnd={dragEnd} />
         ))}
       </div>
     </div>
