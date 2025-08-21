@@ -39,7 +39,7 @@
   animation: borderGradient 6s ease infinite;
   color: white;
   transition: all;
-  transition-duration: 200ms;
+  transition-duration: 300ms;
 }
 .gradient-border:hover{
     filter: hue-rotate(230deg);

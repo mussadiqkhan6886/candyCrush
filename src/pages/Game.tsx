@@ -13,6 +13,9 @@ import Restart from "../components/Restart"
 import Score from "../components/Score"
 import Heading from "../components/Heading"
 import Loader from "../components/Loader"
+import Moves from "../components/Moves"
+import win from "../images/win.png"
+import lose from "../images/lose.png"
 
 const width: number = 8
 
@@ -34,7 +37,14 @@ const Game = () => {
   const [showSorry, setShowSorry] = useState<boolean>(false)
   const [score, setScore] = useState<number>(0)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [moves, setMoves] = useState<number>(20)
+  const [showResult, setShowResult] = useState<boolean>(false)
 
+  useEffect(() => {
+      if(moves <= 0 || score >= 100){
+      setShowResult(true)
+    }
+  }, [moves, score])
   // ---- CHECK FUNCTIONS ----
   const checkForColOfFour = (board: string[]): boolean => {
     for (let i = 0; i <= 39; i++) {
@@ -45,6 +55,8 @@ const Game = () => {
         colOfFour.forEach(square => board[square] = blank)
         setShowBravo(true)
         setScore(score => score + 4)
+        
+        
         return true
       }
     }
@@ -59,6 +71,7 @@ const Game = () => {
       if (decidedColor && colOfThree.every(square => board[square] === decidedColor && !isBlank)) {
         colOfThree.forEach(square => board[square] = blank)
         setScore(score => score + 3)
+        
         setShowAwesome(true)
         return true
       }
@@ -79,6 +92,7 @@ const Game = () => {
         rowOfFour.forEach(square => board[square] = blank)
         setShowBravo(true)
         setScore(score => score + 4)
+        
         return true
         
       }
@@ -98,6 +112,7 @@ const Game = () => {
         rowOfThree.forEach(square => board[square] = blank)
         setShowAwesome(true)
         setScore(score => score + 3)
+        
         return true
       }
     }
@@ -167,9 +182,11 @@ const Game = () => {
       (isAColOfFour || isAColOfThree || isARowOfFour || isARowOfThree)
     ) {
       setCurrenColorArrangement(newArrangement)
+      setMoves(moves => moves - 1)
     } else {
-      setCurrenColorArrangement([...currentColorArrangement]) // revert
-      setShowSorry(true)
+        setCurrenColorArrangement([...currentColorArrangement]) // revert
+        setMoves(moves => moves - 1)
+        setShowSorry(true)
     }
 
     setBeingDragged(null)
@@ -223,6 +240,9 @@ const Game = () => {
 
   const reset = () => {
     createBoard()
+    setShowResult(false)
+    setMoves(20)
+    setScore(0)
   }
 
   // ---- RENDER ----
@@ -230,13 +250,25 @@ const Game = () => {
     <div className="flex flex-col items-center justify-center min-h-screen game">
      <Score score={score} />
      <Restart func={reset} />
-     <Heading />
+     <Moves moves={moves} />
+     {!showResult && <Heading />}
       {showBravo && <img className="w-[500px] absolute z-10000 animation" src={bravo} alt="bravo" />}
       {showAwesome && <img className="w-[400px] absolute z-1000 animation" src={awesome} alt="awesome" />}
       {showSorry && <img className="w-[500px] absolute z-10000 animation" src={sorry} alt="sorry" />}
       {isLoading && <Loader />}
+      {showResult &&
+       (score <= 100 ?
+        <div className="absolute flex flex-col items-center">
+          <h2 className="font-bold text-3xl text-red-500">You Lost</h2>
+          <img className=" z-100000 w-[500px]" alt="lost image" src={lose} /> 
+        </div>
+        : 
+        <div className="absolute flex flex-col items-center">
+          <h2 className="font-bold text-3xl text-red-500">You Won</h2>
+          <img className=" z-10 w-[400px]" alt="won image" src={win} /> 
+        </div>)}
       <div className="grid grid-cols-8 gap-1 bg-white/30 p-3 rounded-2xl shadow-2xl backdrop-blur">
-        {currentColorArrangement.map((candy, index) => (
+       {!showResult && currentColorArrangement.map((candy, index) => (
           <img
             key={index}
             src={candy}
