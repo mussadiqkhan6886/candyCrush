@@ -208,7 +208,7 @@ const Game = () => {
     const timer = setTimeout(() => {
         createBoard()
         setIsLoading(false)
-    }, 1500)
+    }, 2500)
 
     return () => clearTimeout(timer)
   }, [])
@@ -223,7 +223,7 @@ const Game = () => {
       checkForRowOfThree(board)
       moveIntoSquareBelow(board)
       setCurrenColorArrangement([...board])
-    }, 150)
+    }, 100)
 
     return () => clearInterval(timer)
   }, [currentColorArrangement])
