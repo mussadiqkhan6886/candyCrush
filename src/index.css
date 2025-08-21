@@ -1,1 +1,60 @@
 @import "tailwindcss";
+
+
+.game{
+    background-image: url("images/background.jpg");
+    background-position: center;
+}
+
+.animation{
+    animation: comeout 2s ease-in-out;
+}
+
+@keyframes comeout{
+    0%{
+        scale: 0;
+    }
+    50%{
+        scale: 100%;
+    }
+    100%{
+        scale: 0;
+    }
+}
+
+.candy-crush-text {
+  background: linear-gradient(135deg, #ffcc33, #ff6699, #cc33ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900;
+  position: relative;
+}
+
+.gradient-border {
+  position: absolute;
+  border-radius: 0.4rem; /* rounded edges like candy */
+  padding: 10px 30px;    /* space for border effect */
+  background: linear-gradient(270deg, #ff4ecd, #ffcc33, #33ccff, #ff6699);
+  background-size: 600% 600%;
+  animation: borderGradient 6s ease infinite;
+  color: white;
+  transition: all;
+  transition-duration: 200ms;
+}
+.gradient-border:hover{
+    filter: hue-rotate(230deg);
+}
+
+
+@keyframes borderGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
