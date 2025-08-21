@@ -257,7 +257,7 @@ const Game = () => {
       {showSorry && <img className="w-[500px] absolute z-10000 animation" src={sorry} alt="sorry" />}
       {isLoading && <Loader />}
       {showResult &&
-       (score <= 100 ?
+       (score < 100 ?
         <div className="absolute flex flex-col items-center">
           <h2 className="font-bold text-3xl text-red-500">You Lost</h2>
           <img className=" z-100000 w-[500px]" alt="lost image" src={lose} /> 
