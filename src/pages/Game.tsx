@@ -11,6 +11,8 @@ import bravo from "../images/bravo.png"
 import sorry from "../images/sorry.png"
 import Restart from "../components/Restart"
 import Score from "../components/Score"
+import Heading from "../components/Heading"
+import Loader from "../components/Loader"
 
 const width: number = 8
 
@@ -31,6 +33,7 @@ const Game = () => {
   const [showAwesome, setShowAwesome] = useState<boolean>(false)
   const [showSorry, setShowSorry] = useState<boolean>(false)
   const [score, setScore] = useState<number>(0)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   // ---- CHECK FUNCTIONS ----
   const checkForColOfFour = (board: string[]): boolean => {
@@ -185,8 +188,14 @@ const Game = () => {
 
   // ---- EFFECTS ----
   useEffect(() => {
-    createBoard()
+    const timer = setTimeout(() => {
+        createBoard()
+        setIsLoading(false)
+    }, 1500)
+
+    return () => clearTimeout(timer)
   }, [])
+
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -221,22 +230,11 @@ const Game = () => {
     <div className="flex flex-col items-center justify-center min-h-screen game">
      <Score score={score} />
      <Restart func={reset} />
-     <h1 className="text-6xl font-extrabold mb-8 animate-bounce text-center">
-    <span className="bg-gradient-to-r from-pink-400 to-pink-600 bg-clip-text text-transparent drop-shadow-lg">
-      Candy
-    </span>
-    {" "}
-    <span className="candy-crush-text drop-shadow-xl">
-      Crush
-    </span>
-    {" "}
-    <span className="bg-gradient-to-r from-purple-400 to-pink-300 bg-clip-text text-transparent drop-shadow-lg">
-      Clone
-    </span>
-    </h1>
+     <Heading />
       {showBravo && <img className="w-[500px] absolute z-10000 animation" src={bravo} alt="bravo" />}
       {showAwesome && <img className="w-[400px] absolute z-1000 animation" src={awesome} alt="awesome" />}
       {showSorry && <img className="w-[500px] absolute z-10000 animation" src={sorry} alt="sorry" />}
+      {isLoading && <Loader />}
       <div className="grid grid-cols-8 gap-1 bg-white/30 p-3 rounded-2xl shadow-2xl backdrop-blur">
         {currentColorArrangement.map((candy, index) => (
           <img
